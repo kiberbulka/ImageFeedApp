@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
     // MARK: - IB Outlets
     
     @IBOutlet private var tableView: UITableView!
@@ -23,8 +23,6 @@ class ImagesListViewController: UIViewController {
         formatter.timeStyle = .none
         return formatter
     }()
-    
-    
 
     // MARK: - Initializers
     
@@ -35,7 +33,6 @@ class ImagesListViewController: UIViewController {
         tableView.rowHeight = 200
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
-    
     
     // MARK: - IB Action
     
@@ -48,7 +45,7 @@ class ImagesListViewController: UIViewController {
         cell.cellImage.image = image
         cell.dateLabel.text = dateFormatter.string(from: Date())
         
-        let isLiked = indexPath.row%2 == 0
+        let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "like_button_on") :
             UIImage(named: "like_button_off")
         cell.likeButton.setImage(likeImage, for: .normal)  
@@ -86,6 +83,11 @@ extension ImagesListViewController:UITableViewDataSource{
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = image.size.width
+        guard imageWidth != 0 else {
+            let scale = imageViewWidth / 1
+            let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
+            return cellHeight
+        }
         let scale = imageViewWidth / imageWidth
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
