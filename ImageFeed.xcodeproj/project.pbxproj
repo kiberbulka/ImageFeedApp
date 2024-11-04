@@ -51,10 +51,17 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
-		0FA901452CCCD4770088C4A2 = {
+		0F9C86402CD8CEBA00B5A84C /* SingleImage */ = {
 			isa = PBXGroup;
 			children = (
 				0F9C863E2CD8B9A400B5A84C /* SingleImageViewController.swift */,
+			);
+			path = SingleImage;
+			sourceTree = "<group>";
+		};
+		0FA901452CCCD4770088C4A2 = {
+			isa = PBXGroup;
+			children = (
 				0FA901502CCCD4770088C4A2 /* ImageFeed */,
 				0FA9014F2CCCD4770088C4A2 /* Products */,
 			);
@@ -72,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				0FA901512CCCD4770088C4A2 /* AppDelegate.swift */,
+				0F9C86402CD8CEBA00B5A84C /* SingleImage */,
 				0F9C863D2CD8B3C200B5A84C /* Profile */,
 				0FA901892CCCF2A10088C4A2 /* ImagesList */,
 				0FA901532CCCD4770088C4A2 /* SceneDelegate.swift */,
