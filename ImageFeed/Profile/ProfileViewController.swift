@@ -34,7 +34,8 @@ final class ProfileViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
+            nameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 16)
         ])
         
         let usernameLabel = UILabel()
@@ -53,6 +54,7 @@ final class ProfileViewController: UIViewController {
         descriptionLabel.text = "Hello, World!"
         descriptionLabel.font = .systemFont(ofSize: 13)
         descriptionLabel.textColor = .ypWhite
+        descriptionLabel.numberOfLines = 0
         self.view.addSubview(descriptionLabel)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -75,6 +77,4 @@ final class ProfileViewController: UIViewController {
     
 
 }
-//#Preview("ProfileView") {
-    //ProfileViewController()
-//}
+
