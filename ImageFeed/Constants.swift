@@ -11,5 +11,10 @@ enum Constants{
     static let secretKey = "F-favgoXnilpiebzXQ5y6cRrnAZuUaczbnbq_2O5hyk"
     static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
     static let accessScope = "public+read_user+write_likes"
-    static let defaultBaseURL = URL(string: "https://api.unsplash.com") ?? URL(string: "")
+    static let defaultBaseURL: URL = {
+        guard let url = URL(string: "https://api.unsplash.com") else {
+            fatalError("Ошибка: невозможно создать URL из строки")
+        }
+        return url
+    }()
 }

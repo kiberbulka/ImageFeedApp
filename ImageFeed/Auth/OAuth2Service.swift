@@ -12,6 +12,7 @@ final class OAuth2Service {
     // MARK: - Public Properties
     
     static let shared = OAuth2Service()
+    
     var authToken: String? {
         get {
             OAuth2TokenStorage().token
@@ -28,7 +29,7 @@ final class OAuth2Service {
     private let decoder = JSONDecoder()
     
     
-    // MARK: - Initializers
+    // MARK: - Private Initializers
     
     private init (){}
     
@@ -41,7 +42,7 @@ final class OAuth2Service {
         
         let task = urlSession.data(for: request) { [weak self] result in
             
-            guard let self else { preconditionFailure("self is unavalible") }
+            guard let self else { preconditionFailure("self is unavailable") }
             
             switch result {
             case .success(let data):
@@ -54,10 +55,14 @@ final class OAuth2Service {
                     completion(.success(OAuthTokenResponseBody.accessToken))
                 } catch {
                     completion(.failure(error))
+                    print("Не удалось декодировать OAuthTokenResponseBody")
+
                 }
                 
             case .failure(let error):
                 completion(.failure(error))
+                print("Ошибка выполнения запроса")
+
                 
             }
         }
