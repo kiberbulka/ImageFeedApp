@@ -37,32 +37,23 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueidentifier { 
-                    guard
-                        let viewController = segue.destination as? SingleImageViewController,
-                        let indexPath = sender as? IndexPath
-                    else {
-                        assertionFailure("Invalid segue destination")
-                        return
-                    }
-
-                    let image = UIImage(named: photosName[indexPath.row])
-                    viewController.image = image
-                } else {
-                    super.prepare(for: segue, sender: sender)
-                }
+            guard
+                let viewController = segue.destination as? SingleImageViewController,
+                let indexPath = sender as? IndexPath
+            else {
+                assertionFailure("Invalid segue destination")
+                return
+            }
+            
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
         }
-
-    
-    // MARK: - IB Action
-    
-    // MARK: - Public Methods
-    
-    
-    
-    // MARK: - Private Methods
+    }
     
 }
-    // MARK: - Extensions
+// MARK: - Extensions
 
 extension ImagesListViewController:UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,8 +72,8 @@ extension ImagesListViewController:UITableViewDataSource{
 
 extension ImagesListViewController: UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            performSegue(withIdentifier: showSingleImageSegueidentifier, sender: indexPath)
-        }
+        performSegue(withIdentifier: showSingleImageSegueidentifier, sender: indexPath)
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
             return 0
@@ -112,7 +103,7 @@ extension ImagesListViewController {
         
         let isLiked = indexPath.row % 2 == 0
         let likeImage = isLiked ? UIImage(named: "like_button_on") :
-            UIImage(named: "like_button_off")
+        UIImage(named: "like_button_off")
         cell.likeButton.setImage(likeImage, for: .normal)
     }
 }
