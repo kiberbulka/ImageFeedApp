@@ -16,16 +16,9 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
     
     private let storage = OAuth2TokenStorage()
     private let showAuthenticationScreenSegueIdentifier = "ShowAutentificationScreen"
-//    private let oauth2Service = OAuth2Service.shared
-//    private let profileService = ProfileService()
     private enum SplashViewControllerConstants {
         static let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
     }
-    
-    
-    
-    
-    // MARK: - Initializers
     
     // MARK: - Overrides Methods
     
@@ -71,15 +64,6 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
         }
     }
     
-    // MARK: - Public Methods
-    
-//    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-//        dismiss(animated: true) { [weak self] in
-//            guard let self = self else { return }
-//            self.fetchOAuthToken(code)
-//        }
-//    }
-    
     // MARK: - Private Methods
     
     private func switchToTabBarController() {
@@ -88,18 +72,7 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
             .instantiateViewController(withIdentifier: "TabBarController")
         window.rootViewController = tabBarController
     }
-    
-//    private func fetchOAuthToken(_ code: String) {
-//        oauth2Service.fetchOAuthToken(code) { [weak self] result in
-//            guard let self else { return }
-//            switch result {
-//            case .success:
-//                self.switchToTabBarController()
-//            case .failure(let error):
-//                print("fetch token error \(error)")
-//            }
-//        }
-//    }
+
     
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()

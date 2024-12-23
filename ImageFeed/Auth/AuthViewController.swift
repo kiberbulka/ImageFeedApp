@@ -10,7 +10,6 @@ import WebKit
 import ProgressHUD
 
 protocol AuthViewControllerDelegate: AnyObject {
-//    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String)
     func didAuthenticate(_ vc: AuthViewController)
 }
 
@@ -43,19 +42,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             UIBlockingProgressHUD.dismiss()
             
             switch result {
-            case .success(let token):
-//                ProfileService.shared.fetchProfile(token) { profileResult in
-//                    DispatchQueue.main.async {
-//                        switch profileResult {
-//                        case .success:
-//                            self.delegate?.authViewController(self, didAuthenticateWithCode: code)
-//                        case .failure(let error):
-//                            print("Failed to fetch profile: \(error)")
-//                            self.showAlertError(message: "Не удалось получить профиль прльзователя")
-//                        }
-//                    }
-//                }
-                
+            case .success(_):
                 self.delegate?.didAuthenticate(self)
             case .failure(let error):
                 print("Failed to fetch OAuth2 token: \(error.localizedDescription)")
