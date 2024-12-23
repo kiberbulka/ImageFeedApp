@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
-
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         self.view.backgroundColor = .ypBlack
         let userPic = UIImage(named: "userPic")
         let avatarImage = UIImageView(image: userPic)
@@ -72,9 +78,39 @@ final class ProfileViewController: UIViewController {
             logoutButton.centerYAnchor.constraint(equalTo: avatarImage.centerYAnchor),
             logoutButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -24)
         ])
+        
+        
+        if let profile = ProfileService.shared.profile {
+            nameLabel.text = profile.name
+            descriptionLabel.text = profile.bio
+            usernameLabel.text = profile.username
+        }
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main
+        )   {[weak self] _ in
+            guard let self = self else { return }
+            self.updateAvatar()
+        }
+        updateAvatar()
     }
     
-    
-
+    private func updateAvatar(){
+        guard
+            let profileImageUrl = ProfileImageService.shared.avatarUrl,
+            let url = URL(string: profileImageUrl)
+        else { return }
+        
+        if let imageView = view.subviews.compactMap( {$0 as? UIImageView}).first {
+            imageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "avatar"),
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        }
+    }
 }
-

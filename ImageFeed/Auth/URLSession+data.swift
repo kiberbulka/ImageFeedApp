@@ -14,30 +14,39 @@ enum NetworkError: Error {  // 1
 }
 
 extension URLSession {
-    func data(
-        for request: URLRequest,
-        completion: @escaping (Result<Data, Error>) -> Void
-    ) -> URLSessionTask {
-        let fulfillCompletionOnTheMainThread: (Result<Data, Error>) -> Void = { result in  // 2
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
-        
-        let task = dataTask(with: request, completionHandler: { data, response, error in
-            if let data = data, let response = response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
-                if 200 ..< 300 ~= statusCode {
-                    fulfillCompletionOnTheMainThread(.success(data)) // 3
-                } else {
-                    fulfillCompletionOnTheMainThread(.failure(NetworkError.httpStatusCode(statusCode))) // 4
+    func objectTask<T: Decodable>(
+            for request: URLRequest,
+            completion: @escaping (Result<T, Error>) -> Void
+        ) -> URLSessionTask {
+            let decoder = JSONDecoder()
+
+            let task = self.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("[objectTask]: NetworkError - \(error.localizedDescription)")
+                    completion(.failure(error))
+                    return
                 }
-            } else if let error = error {
-                fulfillCompletionOnTheMainThread(.failure(NetworkError.urlRequestError(error))) // 5
-            } else {
-                fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError)) // 6
+
+                guard let data = data else {
+
+                    print("[objectTask]: NetworkError - No data received.")
+                    completion(.failure(NetworkError.urlSessionError))
+                    return
+                }
+
+                do {
+
+                    let decodedObject = try decoder.decode(T.self, from: data)
+                    completion(.success(decodedObject))
+                } catch {
+
+                    let dataString = String(data: data, encoding: .utf8) ?? "Не удалось преобразовать данные в строку."
+                    print("[objectTask]: DecodingError - \(error.localizedDescription), Данные: \(dataString)")
+                    completion(.failure(error))
+                }
             }
-        })
-        
-        return task
-    }
+
+            task.resume()  
+            return task
+        }
 }
