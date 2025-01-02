@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F02A0392D19C4D000276D90 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F02A0382D19C4D000276D90 /* TabBarController.swift */; };
 		0F9C863C2CD8A14000B5A84C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9C863B2CD8A14000B5A84C /* ProfileViewController.swift */; };
 		0F9C863F2CD8B9A400B5A84C /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F9C863E2CD8B9A400B5A84C /* SingleImageViewController.swift */; };
 		0F9F16192D072E340044BAA4 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0F9F16182D072E340044BAA4 /* Kingfisher */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F02A0382D19C4D000276D90 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		0F9C863B2CD8A14000B5A84C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		0F9C863E2CD8B9A400B5A84C /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		0FA47CD02CEA00390057C707 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				0FA9015F2CCCD4790088C4A2 /* Info.plist */,
 				0FDDBE132CE63904000A463A /* Constants.swift */,
 				0FBF93B52D00A38200B0E589 /* UIBlockingProgressHUD.swift */,
+				0F02A0382D19C4D000276D90 /* TabBarController.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -239,6 +242,7 @@
 				0FA901562CCCD4770088C4A2 /* ImagesListViewController.swift in Sources */,
 				0FBF93B82D00A57600B0E589 /* ProfileService.swift in Sources */,
 				0FA901522CCCD4770088C4A2 /* AppDelegate.swift in Sources */,
+				0F02A0392D19C4D000276D90 /* TabBarController.swift in Sources */,
 				0FA53A632CEB78D7009AE32F /* SplashScreenViewController.swift in Sources */,
 				0FA47CD52CEA09540057C707 /* OAuthTokenResponseBody.swift in Sources */,
 				0F9C863C2CD8A14000B5A84C /* ProfileViewController.swift in Sources */,

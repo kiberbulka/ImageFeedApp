@@ -15,15 +15,12 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
     // MARK: - Private Properties
     
     private let storage = OAuth2TokenStorage()
-    private let showAuthenticationScreenSegueIdentifier = "ShowAutentificationScreen"
-    private enum SplashViewControllerConstants {
-        static let showAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    }
-    
+
     // MARK: - Overrides Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -32,7 +29,7 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
         if let token = storage.token {
             fetchProfile(token)
         } else {
-            performSegue(withIdentifier: SplashViewControllerConstants.showAuthenticationScreenSegueIdentifier, sender: nil)
+            switchToAuthViewController()
         }
         
     }
@@ -46,25 +43,25 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
         .lightContent
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SplashViewControllerConstants.showAuthenticationScreenSegueIdentifier {
-            
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else {
-                assertionFailure("Failed to prepare for \(SplashViewControllerConstants.showAuthenticationScreenSegueIdentifier)")
-                return
-            }
-            
-            viewController.delegate = self
-            
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
+  
     
     // MARK: - Private Methods
+    
+    private func setupUI() {
+        let splashImage = UIImage(named: "splash_screen_logo")
+        let logoImage = UIImageView(image: splashImage)
+        
+            view.addSubview(logoImage)
+            view.backgroundColor = UIColor.ypBlack
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                logoImage.widthAnchor.constraint(equalToConstant: 75),
+                logoImage.heightAnchor.constraint(equalToConstant: 77.68),
+                logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                logoImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            ])
+        }
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
@@ -72,7 +69,16 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
             .instantiateViewController(withIdentifier: "TabBarController")
         window.rootViewController = tabBarController
     }
-
+    
+    private func switchToAuthViewController(){
+        let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        guard let authViewController = storyboard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else {return}
+        authViewController.delegate = self
+        
+        let navigationController = UINavigationController(rootViewController: authViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        present(navigationController, animated: true, completion: nil)
+    }
     
     private func fetchProfile(_ token: String) {
         UIBlockingProgressHUD.show()
