@@ -16,6 +16,7 @@ final class SingleImageViewController: UIViewController {
     
     // MARK: - Public Properties
     
+    var imageUrl:URL?
     var image: UIImage? {
         didSet {
             guard isViewLoaded, let image else { return }
