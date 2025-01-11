@@ -18,6 +18,35 @@ final class ImagesListService {
     static let shared = ImagesListService()
     private let storage = OAuth2TokenStorage()
     
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        let baseUrl = Constants.defaultBaseURL
+        let path = "/photos/\(photoId)/like"
+        let url = baseUrl.appendingPathComponent(path)
+        var request = URLRequest(url: url)
+                request.httpMethod = isLike ? "POST" : "DELETE"
+        if let token = storage.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+            } else {
+            completion(.failure(NSError(domain: "ImagesListService", code: 401, userInfo: [NSLocalizedDescriptionKey: "Missing authorization token"])))
+                    return
+            }
+        let task = urlSession.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                guard let response = response as? HTTPURLResponse, (200...299).contains(response.statusCode) else {
+                    let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+                    let error = NSError(domain: "ImagesListService", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to change like status"])
+                        completion(.failure(error))
+                        return
+                }
+                completion(.success(()))
+            }
+            task.resume()
+        }
+    
        func fetchPhotosNextPage() {
            guard !isLoading else { return }
            isLoading = true

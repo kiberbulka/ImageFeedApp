@@ -39,10 +39,10 @@ struct Photo {
     let size: CGSize
     let createdAt: Date?
     let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
+    let thumbImageURL: String?
+    let largeImageURL: String?
     let aspectRatio: CGFloat
-    let isLiked: Bool
+    var isLiked: Bool
 }
 
 extension Photo {

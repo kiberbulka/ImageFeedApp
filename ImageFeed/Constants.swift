@@ -17,4 +17,6 @@ enum Constants{
         }
         return url
     }()
+    static let photos: String = "photos"
+    static let perPage: String = "10"
 }

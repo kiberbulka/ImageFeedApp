@@ -43,7 +43,7 @@
                                                         <constraint firstAttribute="height" constant="44" id="Ul7-ol-TkY"/>
                                                     </constraints>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" image="Active"/>
+                                                    <state key="normal" image="like_button_on"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22 august 2022" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8g-az-gHC" userLabel="Date Label">
                                                     <rect key="frame" x="24.000000000000007" y="189.33333333333334" width="95.666666666666686" height="15.666666666666657"/>
@@ -95,7 +95,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1605.3435114503816" y="-66.197183098591552"/>
+            <point key="canvasLocation" x="2532.06106870229" y="-66.197183098591552"/>
         </scene>
         <!--Single Image View Controller-->
         <scene sceneID="l1Q-kI-5Bw">
@@ -165,7 +165,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zky-Ml-UBG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2616.030534351145" y="-66.197183098591552"/>
+            <point key="canvasLocation" x="3782.4427480916029" y="-66.197183098591552"/>
         </scene>
         <!--Auth View Controller-->
         <scene sceneID="fSL-rG-xlG">
@@ -311,11 +311,29 @@
             </objects>
             <point key="canvasLocation" x="2614.5038167938928" y="627.46478873239437"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="1On-eO-GZi">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nF8-AY-Fmk" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DFo-0q-SEE">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="DIV-Pa-S2f"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ghh-fn-M6b" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1605.3435114503816" y="-66.197183098591552"/>
+        </scene>
     </scenes>
     <resources>
         <image name="0" width="1600" height="1059"/>
-        <image name="Active" width="84" height="84"/>
         <image name="backButton" width="24" height="24"/>
+        <image name="like_button_on" width="84" height="84"/>
         <image name="nav_back_button" width="24" height="24"/>
         <image name="sharingButton" width="50" height="50"/>
         <image name="unsplash_logo" width="120" height="120"/>

@@ -9,8 +9,11 @@ import UIKit
 
 import UIKit
 import Kingfisher
+import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
+   
+    
     // MARK: - IB Outlets
     
     @IBOutlet private var tableView: UITableView!
@@ -58,7 +61,8 @@ final class ImagesListViewController: UIViewController {
             }
             
             let photo = photos[indexPath.row]
-            if let url = URL(string: photo.largeImageURL) {
+            if let largeImageURLString = photo.largeImageURL,
+                let url = URL(string: largeImageURLString) {
                 viewController.imageUrl = url
             } else {
                 print("Invalid URL string: \(photo.largeImageURL)")
@@ -93,7 +97,8 @@ extension ImagesListViewController:UITableViewDataSource, UITableViewDelegate{
             return UITableViewCell()
         }
         let photo = photos[indexPath.row]
-        imageListCell.configure(with: photo)
+        imageListCell.configure(with: photo, tableView: tableView, for: imageListCell, with: indexPath)
+        imageListCell.delegate = self
         
         return imageListCell
     }
@@ -109,6 +114,43 @@ extension ImagesListViewController:UITableViewDataSource, UITableViewDelegate{
         let width = tableView.bounds.width - 32
         return width * photo.aspectRatio + 16
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: showSingleImageSegueidentifier, sender: indexPath)
+        let photo = photos[indexPath.row]
+        guard let fullImageUrlString = photo.largeImageURL,
+              let fullImageUrl = URL(string: fullImageUrlString) else { return }
+        let detailVC = SingleImageViewController()
+        detailVC.imageUrl = fullImageUrl
+        
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+}
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.photos[indexPath.row].isLiked.toggle()
+                   //guard let photos = self?.imagesListService.photos else { return }
+                    cell.setIsLiked(self?.photos[indexPath.row].isLiked ?? false)
+                    UIBlockingProgressHUD.dismiss()
+                case .failure(let error):
+                    UIBlockingProgressHUD.dismiss()
+                    let alert = UIAlertController(title: "Что-то пошло не так", message: "\(error.localizedDescription)", preferredStyle: .alert)
+                    let action = UIAlertAction(title: "OK", style: .default)
+                    alert.addAction(action)
+                }
+            }
+        }
+    }
+
+    
+    
 }
 
 
