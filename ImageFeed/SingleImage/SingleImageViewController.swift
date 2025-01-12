@@ -56,28 +56,34 @@ final class SingleImageViewController: UIViewController {
         let imageSize = image.size
         let hScale = visibleRectSize.width / imageSize.width
         let vScale = visibleRectSize.height / imageSize.height
-        let scale = min(hScale, vScale)
-        scrollView.setZoomScale(scale, animated: false)
+        let scale = max(hScale, vScale)  // Используем max, чтобы растянуть изображение на весь экран
+        
+        scrollView.minimumZoomScale = scale
+        scrollView.maximumZoomScale = 1.25
+        scrollView.zoomScale = scale  // Устанавливаем начальный масштаб
+        
         let x = (scrollView.contentSize.width - visibleRectSize.width) / 2
         let y = (scrollView.contentSize.height - visibleRectSize.height) / 2
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+        
     }
     
     private func showImage() {
-            UIBlockingProgressHUD.show()
-            imageView.kf.setImage(with: imageUrl) { [weak self] result in
-                UIBlockingProgressHUD.dismiss()
-                guard let self = self else { return }
-                switch result {
-                case .success(let imageResult):
-                    scrollView.minimumZoomScale = 0.1
-                    scrollView.maximumZoomScale = 1.25
-                    self.rescaleAndCenterImageInScrollView(image: imageResult.image)
-                case .failure(_):
-                    self.showError()
-                }
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: imageUrl) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self = self else { return }
+            switch result {
+            case .success(let imageResult):
+                imageView.frame.size = imageResult.image.size
+                scrollView.minimumZoomScale = 0.1
+                scrollView.maximumZoomScale = 1.25
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure(_):
+                self.showError()
             }
         }
+    }
     private func showError(){
         let alert = UIAlertController(title: "Что-то пошло не так. Попробовать еще раз?", message: "", preferredStyle: .alert)
         let actionDismiss = UIAlertAction(title: "Не надо", style: .default) {
@@ -93,7 +99,7 @@ final class SingleImageViewController: UIViewController {
     
 }
 
-    // MARK: - Extensions
+// MARK: - Extensions
 
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {

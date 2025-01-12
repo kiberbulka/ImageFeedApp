@@ -6,8 +6,6 @@
 //
 
 import UIKit
-
-import UIKit
 import Kingfisher
 import ProgressHUD
 
@@ -72,10 +70,12 @@ final class ImagesListViewController: UIViewController {
 
     @objc private func updateTableViewAnimated() {
         let oldCount = photos.count
-        let newCount = imagesListService.photos.count
-        photos = imagesListService.photos
+        let newPhotos = imagesListService.photos
+        let newCount = newPhotos.count
+        
         if oldCount != newCount {
             tableView.performBatchUpdates {
+                photos = newPhotos  // Обновляем данные внутри performBatchUpdates
                 let indexPaths = (oldCount..<newCount).map { i in
                     IndexPath(row: i, section: 0)
                 }

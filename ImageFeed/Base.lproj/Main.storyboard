@@ -105,14 +105,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V9j-ao-WCG">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V9j-ao-WCG">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="vcc-nn-H1M">
-                                        <rect key="frame" x="-11" y="177" width="414" height="414"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="vcc-nn-H1M">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                                     </imageView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="vcc-nn-H1M" secondAttribute="bottom" id="Ujt-pz-uAo"/>
+                                    <constraint firstItem="vcc-nn-H1M" firstAttribute="leading" secondItem="V9j-ao-WCG" secondAttribute="leading" id="bQZ-01-SIa"/>
+                                    <constraint firstAttribute="trailing" secondItem="vcc-nn-H1M" secondAttribute="trailing" id="hcm-DM-9WE"/>
+                                    <constraint firstItem="vcc-nn-H1M" firstAttribute="top" secondItem="V9j-ao-WCG" secondAttribute="top" id="rLC-ne-7CK"/>
+                                </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="uJW-iy-AxJ"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Y8t-Rq-WUY"/>
                                 <connections>
@@ -147,11 +152,11 @@
                         <viewLayoutGuide key="safeArea" id="seY-Ed-7WR"/>
                         <color key="backgroundColor" name="YP Black"/>
                         <constraints>
-                            <constraint firstItem="V9j-ao-WCG" firstAttribute="top" secondItem="seY-Ed-7WR" secondAttribute="top" id="6dz-e1-6Zh"/>
+                            <constraint firstItem="V9j-ao-WCG" firstAttribute="top" secondItem="SPs-Sx-JYu" secondAttribute="top" id="6dz-e1-6Zh"/>
                             <constraint firstItem="Sb2-LH-5i0" firstAttribute="top" secondItem="seY-Ed-7WR" secondAttribute="top" constant="8" id="8SK-s9-rfx"/>
                             <constraint firstItem="V9j-ao-WCG" firstAttribute="trailing" secondItem="seY-Ed-7WR" secondAttribute="trailing" id="KxV-OD-kRM"/>
                             <constraint firstItem="seY-Ed-7WR" firstAttribute="bottom" secondItem="Rl0-sK-oGb" secondAttribute="bottom" constant="17" id="MNt-mt-PlM"/>
-                            <constraint firstItem="V9j-ao-WCG" firstAttribute="bottom" secondItem="seY-Ed-7WR" secondAttribute="bottom" id="WMF-Nk-iDi"/>
+                            <constraint firstItem="V9j-ao-WCG" firstAttribute="bottom" secondItem="SPs-Sx-JYu" secondAttribute="bottom" id="WMF-Nk-iDi"/>
                             <constraint firstItem="Rl0-sK-oGb" firstAttribute="centerX" secondItem="seY-Ed-7WR" secondAttribute="centerX" id="a4M-sg-523"/>
                             <constraint firstItem="V9j-ao-WCG" firstAttribute="leading" secondItem="seY-Ed-7WR" secondAttribute="leading" id="eU2-LJ-6c6"/>
                             <constraint firstItem="Sb2-LH-5i0" firstAttribute="leading" secondItem="seY-Ed-7WR" secondAttribute="leading" constant="8" id="pgd-LX-6BG"/>

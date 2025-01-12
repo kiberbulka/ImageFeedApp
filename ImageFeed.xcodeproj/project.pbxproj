@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F02A0392D19C4D000276D90 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F02A0382D19C4D000276D90 /* TabBarController.swift */; };
+		0F2360662D3273F500E6A721 /* ProfileLogoutService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F2360652D3273F500E6A721 /* ProfileLogoutService.swift */; };
 		0F90EC0D2D2A603B00A686A7 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F90EC0C2D2A603A00A686A7 /* ProfileService.swift */; };
 		0F90EC112D2A60A400A686A7 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F90EC102D2A60A400A686A7 /* ProfileImageService.swift */; };
 		0F90EC152D2A60EC00A686A7 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F90EC142D2A60EC00A686A7 /* UIBlockingProgressHUD.swift */; };
@@ -37,6 +38,7 @@
 
 /* Begin PBXFileReference section */
 		0F02A0382D19C4D000276D90 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		0F2360652D3273F500E6A721 /* ProfileLogoutService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLogoutService.swift; sourceTree = "<group>"; };
 		0F90EC0C2D2A603A00A686A7 /* ProfileService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileService.swift; path = ImageFeed/ProfileService.swift; sourceTree = SOURCE_ROOT; };
 		0F90EC102D2A60A400A686A7 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		0F90EC142D2A60EC00A686A7 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				0F9C863B2CD8A14000B5A84C /* ProfileViewController.swift */,
 				0F90EC0C2D2A603A00A686A7 /* ProfileService.swift */,
 				0F90EC102D2A60A400A686A7 /* ProfileImageService.swift */,
+				0F2360652D3273F500E6A721 /* ProfileLogoutService.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				0FB117C02D2BD0FC0026F523 /* PhotoServices.swift in Sources */,
 				0FDDBE142CE63904000A463A /* Constants.swift in Sources */,
 				0F9C863F2CD8B9A400B5A84C /* SingleImageViewController.swift in Sources */,
+				0F2360662D3273F500E6A721 /* ProfileLogoutService.swift in Sources */,
 				0FA47CD72CEA0AC60057C707 /* URLSession+data.swift in Sources */,
 				0F90EC0D2D2A603B00A686A7 /* ProfileService.swift in Sources */,
 				0FDDBE1D2CE646FC000A463A /* WebViewViewController.swift in Sources */,

@@ -17,6 +17,7 @@ final class ImagesListService {
     private let urlSession = URLSession.shared
     static let shared = ImagesListService()
     private let storage = OAuth2TokenStorage()
+    private var task: URLSessionTask?
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
         
@@ -100,6 +101,12 @@ final class ImagesListService {
            }
            task.resume()
        }
+    
+    func clearPhotos(){
+        photos = []
+        lastLoadedPage = nil
+        task = nil
+    }
     
    
   

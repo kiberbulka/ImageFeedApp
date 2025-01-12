@@ -70,7 +70,8 @@ final class ProfileViewController: UIViewController {
         ])
         
         let logoutButton = UIButton()
-        logoutButton.setImage(UIImage(named:"logout_button"), for: .normal)
+        logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
+        logoutButton.addTarget(self, action: #selector(self.logoutButtonDidTap), for: .touchUpInside)
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(logoutButton)
         
@@ -83,7 +84,7 @@ final class ProfileViewController: UIViewController {
         if let profile = ProfileService.shared.profile {
             nameLabel.text = profile.name
             descriptionLabel.text = profile.bio
-            usernameLabel.text = profile.username
+            usernameLabel.text = profile.loginName
         }
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
@@ -97,6 +98,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func updateAvatar(){
+        let processor = RoundCornerImageProcessor(cornerRadius: 42)
         guard
             let profileImageUrl = ProfileImageService.shared.avatarUrl,
             let url = URL(string: profileImageUrl)
@@ -107,10 +109,31 @@ final class ProfileViewController: UIViewController {
                 with: url,
                 placeholder: UIImage(named: "avatar"),
                 options: [
+                    .processor(processor),
                     .transition(.fade(0.2)),
                     .cacheOriginalImage
                 ]
             )
         }
+    }
+    
+    
+    @objc private func logoutButtonDidTap(_ sender: Any) {
+        let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "Нет", style: .default) {_ in
+            alert.dismiss(animated: true)
+        }
+        let actionYes = UIAlertAction(title: "Да", style: .default) { _ in
+            ProfileLogoutService.shared.logout()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid window configuration")
+                return
+            }
+            window.rootViewController = SplashScreenViewController()
+            window.makeKeyAndVisible()
+        }
+        alert.addAction(actionYes)
+        alert.addAction(actionDismiss)
+        self.present(alert, animated: true)
     }
 }
