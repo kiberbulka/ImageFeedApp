@@ -22,12 +22,12 @@ final class ImagesListViewController: UIViewController {
     private let imagesListService = ImagesListService.shared
     private let showSingleImageSegueidentifier = "ShowSingleImage"
    
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
-    }()
+    private static let dateFormatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
+            formatter.timeStyle = .none
+            return formatter
+        }()
     
     // MARK: - Initializers
     
@@ -83,6 +83,10 @@ final class ImagesListViewController: UIViewController {
             } completion: { _ in }
         }
     }
+    
+    private func formatDate(_ date: Date) -> String {
+            return ImagesListViewController.dateFormatter.string(from: date)
+        }
 }
 // MARK: - Extensions
 
