@@ -19,10 +19,10 @@ final class OAuth2Service {
     
     var authToken: String? {
         get {
-            OAuth2TokenStorage().token
+            storage.token
         }
         set {
-            OAuth2TokenStorage().token = newValue
+            storage.token = newValue
         }
     }
     
@@ -33,12 +33,12 @@ final class OAuth2Service {
     private let decoder = JSONDecoder()
     private var task: URLSessionTask?
     private var lastCode: String?
-    private var storage = OAuth2TokenStorage()
+    private var storage = OAuth2TokenStorage.shared
     
     
     // MARK: - Private Initializers
     
-    init (){}
+    private init (){}
     
     
     // MARK: - Public Methods

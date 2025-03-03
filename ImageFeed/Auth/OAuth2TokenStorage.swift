@@ -25,6 +25,8 @@ final class OAuth2TokenStorage {
         }
     }
     
+    private init() {}
+    
     private let storage: UserDefaults = .standard
     
     private enum Keys: String {

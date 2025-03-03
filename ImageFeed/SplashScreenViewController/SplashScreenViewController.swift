@@ -14,8 +14,8 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
     
     // MARK: - Private Properties
     
-    private let storage = OAuth2TokenStorage()
-
+    private let storage = OAuth2TokenStorage.shared
+    
     // MARK: - Overrides Methods
     
     override func viewDidLoad() {
@@ -43,7 +43,7 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
         .lightContent
     }
     
-  
+    
     
     // MARK: - Private Methods
     
@@ -51,17 +51,17 @@ class SplashScreenViewController: UIViewController, AuthViewControllerDelegate {
         let splashImage = UIImage(named: "splash_screen_logo")
         let logoImage = UIImageView(image: splashImage)
         
-            view.addSubview(logoImage)
-            view.backgroundColor = UIColor.ypBlack
+        view.addSubview(logoImage)
+        view.backgroundColor = UIColor.ypBlack
         logoImage.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                logoImage.widthAnchor.constraint(equalToConstant: 75),
-                logoImage.heightAnchor.constraint(equalToConstant: 77.68),
-                logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                logoImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-            ])
-        }
+        
+        NSLayoutConstraint.activate([
+            logoImage.widthAnchor.constraint(equalToConstant: 75),
+            logoImage.heightAnchor.constraint(equalToConstant: 77.68),
+            logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImage.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
     
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }

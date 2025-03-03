@@ -10,7 +10,7 @@ import Kingfisher
 import ProgressHUD
 
 final class ImagesListViewController: UIViewController {
-   
+    
     
     // MARK: - IB Outlets
     
@@ -21,13 +21,13 @@ final class ImagesListViewController: UIViewController {
     private var photos = [Photo]()
     private let imagesListService = ImagesListService.shared
     private let showSingleImageSegueidentifier = "ShowSingleImage"
-   
+    
     private static let dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .long
-            formatter.timeStyle = .none
-            return formatter
-        }()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
     
     // MARK: - Initializers
     
@@ -60,14 +60,14 @@ final class ImagesListViewController: UIViewController {
             
             let photo = photos[indexPath.row]
             if let largeImageURLString = photo.largeImageURL,
-                let url = URL(string: largeImageURLString) {
+               let url = URL(string: largeImageURLString) {
                 viewController.imageUrl = url
             } else {
                 print("Invalid URL string: \(photo.largeImageURL)")
             }
         }
     }
-
+    
     @objc private func updateTableViewAnimated() {
         let oldCount = photos.count
         let newPhotos = imagesListService.photos
@@ -85,8 +85,8 @@ final class ImagesListViewController: UIViewController {
     }
     
     private func formatDate(_ date: Date) -> String {
-            return ImagesListViewController.dateFormatter.string(from: date)
-        }
+        return ImagesListViewController.dateFormatter.string(from: date)
+    }
 }
 // MARK: - Extensions
 
@@ -140,7 +140,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 switch result {
                 case .success:
                     self?.photos[indexPath.row].isLiked.toggle()
-                   //guard let photos = self?.imagesListService.photos else { return }
+                    //guard let photos = self?.imagesListService.photos else { return }
                     cell.setIsLiked(self?.photos[indexPath.row].isLiked ?? false)
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
@@ -152,7 +152,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             }
         }
     }
-
+    
     
     
 }
