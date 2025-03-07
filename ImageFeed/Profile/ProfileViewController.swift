@@ -10,24 +10,40 @@ import Kingfisher
 
 public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? {get set}
-    var profileImageServiceObserver: NSObjectProtocol? {get set}
-    func updateUserProfile(name: String, loginName: String, bio: String)
-    func updateAvatar(with url: URL)
+    func updateUserProfile(name: String, loginName: String, bio: String?)
+    func updateAvatar()
 }
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
-    var profileImageServiceObserver: (any NSObjectProtocol)?
     
-    var presenter: (any ProfilePresenterProtocol)?
+    var presenter: ProfilePresenterProtocol?
     
-    func updateUserProfile(name: String, loginName: String, bio: String) {
+    func updateUserProfile(name: String, loginName: String, bio: String?) {
+        nameLabel.text = name
+        usernameLabel.text = loginName
+        descriptionLabel.text = bio
+    }
+    
+    func updateAvatar(){
+        let processor = RoundCornerImageProcessor(cornerRadius: 42)
+        guard
+            let profileImageUrl = ProfileImageService.shared.avatarUrl,
+            let url = URL(string: profileImageUrl)
+        else { return }
         
+        if let imageView = view.subviews.compactMap( {$0 as? UIImageView}).first {
+            imageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "avatar"),
+                options: [
+                    .processor(processor),
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        }
     }
-    
-    func updateAvatar(with url: URL) {
-        //
-    }
-    
+
     private lazy var userPic: UIImageView = {
         let userPic = UIImageView()
         self.view.addSubview(userPic)
@@ -82,23 +98,12 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
         self.view.backgroundColor = .ypBlack
-        
-        if let profile = ProfileService.shared.profile {
-            nameLabel.text = profile.name
-            descriptionLabel.text = profile.bio
-            usernameLabel.text = profile.loginName
-        }
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        )   {[weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
+        presenter = ProfilePresenter(view: self)
+        presenter?.viewDidLoad()
+        setupUI()
         updateAvatar()
+        
     }
     
     private func setupUI(){
@@ -118,27 +123,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             logoutButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -24)
         ])
     }
-    
-    private func updateAvatar(){
-        let processor = RoundCornerImageProcessor(cornerRadius: 42)
-        guard
-            let profileImageUrl = ProfileImageService.shared.avatarUrl,
-            let url = URL(string: profileImageUrl)
-        else { return }
-        
-        if let imageView = view.subviews.compactMap( {$0 as? UIImageView}).first {
-            imageView.kf.setImage(
-                with: url,
-                placeholder: UIImage(named: "avatar"),
-                options: [
-                    .processor(processor),
-                    .transition(.fade(0.2)),
-                    .cacheOriginalImage
-                ]
-            )
-        }
-    }
-    
+
     
     @objc private func logoutButtonDidTap(_ sender: Any) {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)

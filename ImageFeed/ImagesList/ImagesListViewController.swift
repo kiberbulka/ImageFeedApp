@@ -9,9 +9,13 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: UIViewController {
-    
-    
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? {get set}
+    func updateTableViewAnimated()
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+ 
     // MARK: - IB Outlets
     
     @IBOutlet private var tableView: UITableView!
@@ -29,6 +33,8 @@ final class ImagesListViewController: UIViewController {
         return formatter
     }()
     
+    var presenter: ImagesListViewPresenterProtocol?
+    
     // MARK: - Initializers
     
     // MARK: - Overrides Methods
@@ -37,14 +43,9 @@ final class ImagesListViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateTableViewAnimated),
-            name: ImagesListService.didChangeNotification,
-            object: nil)
-        
-        imagesListService.fetchPhotosNextPage()
+       
+        presenter = ImagesListViewPresenter(view: self)
+        presenter?.viewDidLoad()
     }
     
     
@@ -68,7 +69,7 @@ final class ImagesListViewController: UIViewController {
         }
     }
     
-    @objc private func updateTableViewAnimated() {
+    @objc func updateTableViewAnimated() {
         let oldCount = photos.count
         let newPhotos = imagesListService.photos
         let newCount = newPhotos.count
