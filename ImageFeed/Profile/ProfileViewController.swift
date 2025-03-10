@@ -58,6 +58,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         let nameLabel = UILabel()
         nameLabel.font = .boldSystemFont(ofSize: 23)
         nameLabel.textColor = .ypWhite
+        nameLabel.accessibilityIdentifier = "Name Lastname"
         self.view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         return nameLabel
@@ -68,6 +69,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         usernameLabel.text = "@ekaterina_nov"
         usernameLabel.font = .systemFont(ofSize: 13)
         usernameLabel.textColor = .ypGray
+        usernameLabel.accessibilityIdentifier = "@username"
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(usernameLabel)
         return usernameLabel
@@ -88,6 +90,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         let logoutButton = UIButton()
         logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
         logoutButton.addTarget(self, action: #selector(self.logoutButtonDidTap), for: .touchUpInside)
+        logoutButton.accessibilityIdentifier = "logout button"
         self.view.addSubview(logoutButton)
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         return logoutButton
@@ -127,6 +130,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     
     @objc private func logoutButtonDidTap(_ sender: Any) {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "Bye bye!"
         let actionDismiss = UIAlertAction(title: "Нет", style: .default) {_ in
             alert.dismiss(animated: true)
         }
@@ -141,6 +145,9 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
         }
         alert.addAction(actionYes)
         alert.addAction(actionDismiss)
+        if let yesButton = alert.actions.first {
+            yesButton.accessibilityIdentifier = "Yes"
+        }
         self.present(alert, animated: true)
     }
 }

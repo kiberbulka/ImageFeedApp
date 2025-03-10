@@ -28,6 +28,7 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet var dateLabel: UILabel!
     
     func configure(with photo: Photo, tableView: UITableView, for cell: ImagesListCell, with indexPath: IndexPath) {
+    
         guard let imageUrlString = photo.thumbImageURL,
               let imageUrl = URL(string: imageUrlString) else { return }
         
@@ -63,8 +64,13 @@ final class ImagesListCell: UITableViewCell {
     }
     
     func setIsLiked(_ isLiked: Bool) {
-        let likeImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
-        likeButton.setImage(likeImage, for: .normal)
+        if isLiked {
+            likeButton.setImage(UIImage(named: "like_button_on"), for: .normal)
+            likeButton.accessibilityIdentifier = "like_button_on"
+        } else {
+            likeButton.setImage(UIImage(named: "like_button_off"), for: .normal)
+            likeButton.accessibilityIdentifier = "like_button_off"
+        }
     }
 }
 
