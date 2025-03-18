@@ -109,10 +109,13 @@ extension ImagesListViewController:UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isRunningUITests = ProcessInfo.processInfo.arguments.contains("UITests")
+        if isRunningUITests { return }
         if indexPath.row == photos.count - 1 {
             imagesListService.fetchPhotosNextPage()
         }
     }
+
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photo = photos[indexPath.row]
