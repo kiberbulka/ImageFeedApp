@@ -11,10 +11,11 @@ class ImageFeedUITests: XCTestCase {
     private let app = XCUIApplication() // переменная приложения
     
     override func setUpWithError() throws {
-        continueAfterFailure = false // настройка выполнения тестов, которая прекратит выполнения тестов, если в тесте что-то пошло не так
-        
-        app.launch() // запускаем приложение перед каждым тестом
-    }
+         continueAfterFailure = false
+         let app = XCUIApplication()
+         app.launchArguments.append("UITests")
+         app.launch()
+     }
     
     
     
@@ -59,15 +60,15 @@ class ImageFeedUITests: XCTestCase {
         
         let cellToLike = tablesQuery.children(matching: .cell).element(boundBy: 1)
         
-        cellToLike.buttons["like button off"].tap()
+        cellToLike.buttons["like_button"].tap()
         sleep(5)
-        cellToLike.buttons["like button on"].tap()
+        cellToLike.buttons["like_button"].tap()
         
         sleep(2)
         
         cellToLike.tap()
         
-        sleep(2)
+        sleep(10)
         
         let image = app.scrollViews.images.element(boundBy: 0)
         // Zoom in
