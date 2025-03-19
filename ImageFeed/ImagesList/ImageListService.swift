@@ -16,7 +16,7 @@ final class ImagesListService {
     private var photosPerPage: Int = 10
     private let urlSession = URLSession.shared
     static let shared = ImagesListService()
-    private let storage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage.shared
     private var task: URLSessionTask?
     
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {

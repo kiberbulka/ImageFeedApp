@@ -8,96 +8,23 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController: UIViewController {
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? {get set}
+    func updateUserProfile(name: String, loginName: String, bio: String?)
+    func updateAvatar()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     
-    private var profileImageServiceObserver: NSObjectProtocol?
+    var presenter: ProfilePresenterProtocol?
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        
-        self.view.backgroundColor = .ypBlack
-        let userPic = UIImage(named: "userPic")
-        let avatarImage = UIImageView(image: userPic)
-        avatarImage.layer.cornerRadius = 31
-        self.view.addSubview(avatarImage)
-        avatarImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            avatarImage.heightAnchor.constraint(equalToConstant: 70),
-            avatarImage.widthAnchor.constraint(equalToConstant: 70),
-            avatarImage.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 76),
-            avatarImage.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
-        ])
-        
-        let nameLabel = UILabel()
-        nameLabel.text = "Екатерина Новикова"
-        nameLabel.font = .boldSystemFont(ofSize: 23)
-        nameLabel.textColor = .ypWhite
-        self.view.addSubview(nameLabel)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: avatarImage.bottomAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            nameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 16)
-        ])
-        
-        let usernameLabel = UILabel()
-        usernameLabel.text = "@ekaterina_nov"
-        usernameLabel.font = .systemFont(ofSize: 13)
-        usernameLabel.textColor = .ypGray
-        self.view.addSubview(usernameLabel)
-        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            usernameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
-            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8)
-        ])
-        
-        let descriptionLabel = UILabel()
-        descriptionLabel.text = "Hello, World!"
-        descriptionLabel.font = .systemFont(ofSize: 13)
-        descriptionLabel.textColor = .ypWhite
-        descriptionLabel.numberOfLines = 0
-        self.view.addSubview(descriptionLabel)
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16)
-        ])
-        
-        let logoutButton = UIButton()
-        logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
-        logoutButton.addTarget(self, action: #selector(self.logoutButtonDidTap), for: .touchUpInside)
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(logoutButton)
-        
-        NSLayoutConstraint.activate([
-            logoutButton.centerYAnchor.constraint(equalTo: avatarImage.centerYAnchor),
-            logoutButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -24)
-        ])
-        
-        
-        if let profile = ProfileService.shared.profile {
-            nameLabel.text = profile.name
-            descriptionLabel.text = profile.bio
-            usernameLabel.text = profile.loginName
-        }
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main
-        )   {[weak self] _ in
-            guard let self = self else { return }
-            self.updateAvatar()
-        }
-        updateAvatar()
+    func updateUserProfile(name: String, loginName: String, bio: String?) {
+        nameLabel.text = name
+        usernameLabel.text = loginName
+        descriptionLabel.text = bio
     }
     
-    private func updateAvatar(){
+    func updateAvatar(){
         let processor = RoundCornerImageProcessor(cornerRadius: 42)
         guard
             let profileImageUrl = ProfileImageService.shared.avatarUrl,
@@ -116,10 +43,94 @@ final class ProfileViewController: UIViewController {
             )
         }
     }
+
+    private lazy var userPic: UIImageView = {
+        let userPic = UIImageView()
+        self.view.addSubview(userPic)
+        userPic.translatesAutoresizingMaskIntoConstraints = false
+        userPic.tintColor = .gray
+        userPic.layer.cornerRadius = 31
+        userPic.image = UIImage(named: "userPic")
+        return userPic
+    }()
     
+    private lazy var nameLabel: UILabel = {
+        let nameLabel = UILabel()
+        nameLabel.font = .boldSystemFont(ofSize: 23)
+        nameLabel.textColor = .ypWhite
+        nameLabel.accessibilityIdentifier = "Name Lastname"
+        self.view.addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        return nameLabel
+    }()
+    
+    private lazy var usernameLabel: UILabel = {
+        let usernameLabel = UILabel()
+        usernameLabel.text = "@ekaterina_nov"
+        usernameLabel.font = .systemFont(ofSize: 13)
+        usernameLabel.textColor = .ypGray
+        usernameLabel.accessibilityIdentifier = "@username"
+        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(usernameLabel)
+        return usernameLabel
+    }()
+    
+    private lazy var descriptionLabel: UILabel = {
+        let descriptionLabel = UILabel()
+        descriptionLabel.text = "Hello, World!"
+        descriptionLabel.font = .systemFont(ofSize: 13)
+        descriptionLabel.textColor = .ypWhite
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(descriptionLabel)
+        return descriptionLabel
+    }()
+    
+    private lazy var logoutButton: UIButton = {
+        let logoutButton = UIButton()
+        logoutButton.setImage(UIImage(named: "logout_button"), for: .normal)
+        logoutButton.addTarget(self, action: #selector(self.logoutButtonDidTap), for: .touchUpInside)
+        logoutButton.accessibilityIdentifier = "logout button"
+        self.view.addSubview(logoutButton)
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        return logoutButton
+    }()
+    
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.backgroundColor = .ypBlack
+        presenter = ProfilePresenter(view: self)
+        presenter?.viewDidLoad()
+        setupUI()
+        updateAvatar()
+        
+    }
+    
+    private func setupUI(){
+        NSLayoutConstraint.activate([
+            userPic.heightAnchor.constraint(equalToConstant: 70),
+            userPic.widthAnchor.constraint(equalToConstant: 70),
+            userPic.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 76),
+            userPic.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            nameLabel.topAnchor.constraint(equalTo: userPic.bottomAnchor, constant: 8),
+            nameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            nameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 16),
+            usernameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            descriptionLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8),
+            descriptionLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+            logoutButton.centerYAnchor.constraint(equalTo: userPic.centerYAnchor),
+            logoutButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -24)
+        ])
+    }
+
     
     @objc private func logoutButtonDidTap(_ sender: Any) {
         let alert = UIAlertController(title: "Пока, пока!", message: "Уверены что хотите выйти?", preferredStyle: .alert)
+        alert.view.accessibilityIdentifier = "Bye bye!"
         let actionDismiss = UIAlertAction(title: "Нет", style: .default) {_ in
             alert.dismiss(animated: true)
         }
@@ -134,6 +145,9 @@ final class ProfileViewController: UIViewController {
         }
         alert.addAction(actionYes)
         alert.addAction(actionDismiss)
+        if let yesButton = alert.actions.first {
+            yesButton.accessibilityIdentifier = "Yes"
+        }
         self.present(alert, animated: true)
     }
 }

@@ -85,17 +85,17 @@ final class SingleImageViewController: UIViewController {
         }
     }
     private func showError() {
-            let alert = UIAlertController(title: "Что-то пошло не так. Попробовать еще раз?", message: "", preferredStyle: .alert)
-            let actionDismiss = UIAlertAction(title: "Не надо", style: .default) { [weak self] _ in
-                alert.dismiss(animated: true)
-            }
-            let actionRetry = UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
-                self?.showImage()
-            }
-            alert.addAction(actionDismiss)
-            alert.addAction(actionRetry)
-            present(alert, animated: true)
+        let alert = UIAlertController(title: "Что-то пошло не так. Попробовать еще раз?", message: "", preferredStyle: .alert)
+        let actionDismiss = UIAlertAction(title: "Не надо", style: .default) { [weak self] _ in
+            alert.dismiss(animated: true)
         }
+        let actionRetry = UIAlertAction(title: "Повторить", style: .default) { [weak self] _ in
+            self?.showImage()
+        }
+        alert.addAction(actionDismiss)
+        alert.addAction(actionRetry)
+        present(alert, animated: true)
+    }
     
 }
 

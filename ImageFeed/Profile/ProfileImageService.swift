@@ -20,7 +20,7 @@ final class ProfileImageService {
     
     static let shared = ProfileImageService()
     private var task: URLSessionTask?
-    private let storage = OAuth2TokenStorage()
+    private let storage = OAuth2TokenStorage.shared
     private let urlSession = URLSession.shared
     private(set) var avatarUrl: String?
     
@@ -33,7 +33,7 @@ final class ProfileImageService {
             return nil
         }
         var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
+        //        request.httpMethod = "GET"
         
         if let token = storage.token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

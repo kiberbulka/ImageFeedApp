@@ -9,9 +9,13 @@ import UIKit
 import Kingfisher
 import ProgressHUD
 
-final class ImagesListViewController: UIViewController {
-   
-    
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? {get set}
+    func updateTableViewAnimated()
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+ 
     // MARK: - IB Outlets
     
     @IBOutlet private var tableView: UITableView!
@@ -21,13 +25,15 @@ final class ImagesListViewController: UIViewController {
     private var photos = [Photo]()
     private let imagesListService = ImagesListService.shared
     private let showSingleImageSegueidentifier = "ShowSingleImage"
-   
+    
     private static let dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .long
-            formatter.timeStyle = .none
-            return formatter
-        }()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }()
+    
+    var presenter: ImagesListViewPresenterProtocol?
     
     // MARK: - Initializers
     
@@ -37,14 +43,9 @@ final class ImagesListViewController: UIViewController {
         super.viewDidLoad()
         
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(updateTableViewAnimated),
-            name: ImagesListService.didChangeNotification,
-            object: nil)
-        
-        imagesListService.fetchPhotosNextPage()
+       
+        presenter = ImagesListViewPresenter(view: self)
+        presenter?.viewDidLoad()
     }
     
     
@@ -60,15 +61,15 @@ final class ImagesListViewController: UIViewController {
             
             let photo = photos[indexPath.row]
             if let largeImageURLString = photo.largeImageURL,
-                let url = URL(string: largeImageURLString) {
+               let url = URL(string: largeImageURLString) {
                 viewController.imageUrl = url
             } else {
                 print("Invalid URL string: \(photo.largeImageURL)")
             }
         }
     }
-
-    @objc private func updateTableViewAnimated() {
+    
+    @objc func updateTableViewAnimated() {
         let oldCount = photos.count
         let newPhotos = imagesListService.photos
         let newCount = newPhotos.count
@@ -85,8 +86,8 @@ final class ImagesListViewController: UIViewController {
     }
     
     private func formatDate(_ date: Date) -> String {
-            return ImagesListViewController.dateFormatter.string(from: date)
-        }
+        return ImagesListViewController.dateFormatter.string(from: date)
+    }
 }
 // MARK: - Extensions
 
@@ -108,10 +109,13 @@ extension ImagesListViewController:UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isRunningUITests = ProcessInfo.processInfo.arguments.contains("UITests")
+        if isRunningUITests { return }
         if indexPath.row == photos.count - 1 {
             imagesListService.fetchPhotosNextPage()
         }
     }
+
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photo = photos[indexPath.row]
@@ -140,7 +144,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 switch result {
                 case .success:
                     self?.photos[indexPath.row].isLiked.toggle()
-                   //guard let photos = self?.imagesListService.photos else { return }
+                    //guard let photos = self?.imagesListService.photos else { return }
                     cell.setIsLiked(self?.photos[indexPath.row].isLiked ?? false)
                     UIBlockingProgressHUD.dismiss()
                 case .failure(let error):
@@ -152,7 +156,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
             }
         }
     }
-
+    
     
     
 }
